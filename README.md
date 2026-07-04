@@ -54,6 +54,6 @@ ninja
 
 ## License
 
-MIT License
+LGPL License
 
 Copyright © 2026. All rights reserved.
