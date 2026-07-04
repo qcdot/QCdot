@@ -54,6 +54,6 @@ ninja
 
 ## 许可证
 
-MIT License
+LGPL License
 
 Copyright © 2026. All rights reserved.
