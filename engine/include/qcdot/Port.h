@@ -1,12 +1,12 @@
-#ifndef QBLOCK_PORT_H
-#define QBLOCK_PORT_H
+#ifndef QCDOT_PORT_H
+#define QCDOT_PORT_H
 
 #include "DataType.h"
 #include <QString>
 #include <string>
 #include <cstdint>
 
-namespace QBlock {
+namespace qcdot {
 
 class Node;
 
@@ -64,6 +64,6 @@ private:
     uint64_t     id_ = 0;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_PORT_H
+#endif // QCDOT_PORT_H

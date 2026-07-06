@@ -1,9 +1,9 @@
-#ifndef QBLOCK_CONNECTION_H
-#define QBLOCK_CONNECTION_H
+#ifndef QCDOT_CONNECTION_H
+#define QCDOT_CONNECTION_H
 
 #include <cstdint>
 
-namespace QBlock {
+namespace qcdot {
 
 class Port;
 
@@ -25,6 +25,6 @@ private:
     uint64_t id_ = 0;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_CONNECTION_H
+#endif // QCDOT_CONNECTION_H

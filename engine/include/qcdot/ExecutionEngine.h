@@ -1,5 +1,5 @@
-#ifndef QBLOCK_EXECUTION_ENGINE_H
-#define QBLOCK_EXECUTION_ENGINE_H
+#ifndef QCDOT_EXECUTION_ENGINE_H
+#define QCDOT_EXECUTION_ENGINE_H
 
 #include "NodeGraph.h"
 #include "Variant.h"
@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Execution mode for the graph.
 enum class ExecutionMode {
@@ -71,9 +71,19 @@ public:
             for (const auto& conn : graph.connections()) {
                 auto* srcPort = conn->source();
                 if (srcPort->parentNode() == node && srcPort->isExecFlow()) {
-                    auto* nextNode = conn->target()->parentNode();
-                    if (visited_.find(nextNode->id()) == visited_.end()) {
-                        nodeQueue.push(nextNode);
+                    // For IfElseBranch nodes, only follow the matching branch
+                    bool shouldFollow = true;
+                    if (node->typeName() == "IfElseBranch") {
+                        bool condition = inputs.at("condition").toBool();
+                        shouldFollow = (srcPort->name() == "true" && condition) ||
+                                      (srcPort->name() == "false" && !condition);
+                    }
+
+                    if (shouldFollow) {
+                        auto* nextNode = conn->target()->parentNode();
+                        if (visited_.find(nextNode->id()) == visited_.end()) {
+                            nodeQueue.push(nextNode);
+                        }
                     }
                 }
             }
@@ -179,6 +189,6 @@ private:
     }
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_EXECUTION_ENGINE_H
+#endif // QCDOT_EXECUTION_ENGINE_H

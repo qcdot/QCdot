@@ -1,12 +1,12 @@
-#ifndef QBLOCK_ENGINE_H
-#define QBLOCK_ENGINE_H
+#ifndef QCDOT_ENGINE_H
+#define QCDOT_ENGINE_H
 
 /// ============================================================================
-/// QBlock Engine - Graphical Programming Engine
+/// qcdot Engine - Graphical Programming Engine
 /// 
-/// Single include header for the QBlock engine core.
-/// Include this in any application that needs QBlock functionality:
-///     #include <QBlock/Engine.h>
+/// Single include header for the qcdot engine core.
+/// Include this in any application that needs qcdot functionality:
+///     #include <qcdot/Engine.h>
 /// ============================================================================
 
 #include "DataType.h"
@@ -18,4 +18,4 @@
 #include "ExecutionEngine.h"
 #include "Serializer.h"
 
-#endif // QBLOCK_ENGINE_H
+#endif // QCDOT_ENGINE_H

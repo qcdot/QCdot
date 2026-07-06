@@ -1,11 +1,11 @@
-#ifndef QBLOCK_CONNECTION_WIDGET_H
-#define QBLOCK_CONNECTION_WIDGET_H
+#ifndef QCDOT_CONNECTION_WIDGET_H
+#define QCDOT_CONNECTION_WIDGET_H
 
-#include <QBlock/Connection.h>
+#include <qcdot/Connection.h>
 #include <QGraphicsPathItem>
 #include <QObject>
 
-namespace QBlock {
+namespace qcdot {
 
 class PortWidget;
 
@@ -52,6 +52,6 @@ private:
     QPointF endPoint_;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_CONNECTION_WIDGET_H
+#endif // QCDOT_CONNECTION_WIDGET_H

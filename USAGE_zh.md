@@ -1,6 +1,6 @@
 # QCdot 使用指南
 
-**版本**：0.1.0
+**版本**：0.2.0
 
 [English Version](USAGE.md)
 
@@ -16,26 +16,26 @@ QCdot 是一个可视化编程引擎，允许您创建基于节点的应用程�
 ### 基本设置
 
 ```cpp
-#include <QBlock/NodeEditor.h>
-#include <QBlock/BuiltinNodes.h>
+#include <qcdot/NodeEditor.h>
+#include <qcdot/BuiltinNodes.h>
 #include <QApplication>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    
+
     // 创建节点编辑器
-    QBlock::NodeEditor editor;
-    
+    qcdot::NodeEditor editor;
+
     // 添加节点
     auto* intNode = editor.addNode("ConstantInt", 100, 100);
     auto* addNode = editor.addNode("Add", 300, 100);
-    
+
     // 连接节点
     editor.graph()->connect(
         intNode->outputs()[0].get(),
         addNode->inputs()[0].get()
     );
-    
+
     editor.show();
     return app.exec();
 }
@@ -60,6 +60,11 @@ int main(int argc, char* argv[]) {
 - `Or` - 逻辑或
 - `Not` - 逻辑非
 - `IfElse` - 条件分支
+- `IfElseBranch` - 多路条件分支
+
+### 控制流节点
+- `InputBlock` - 图入口点
+- `EventBlock` - 事件驱动入口点
 
 ### 数据节点
 - `ConstantInt` - 整数常量（使用 `setValue(int64_t)`）
@@ -94,6 +99,18 @@ int main(int argc, char* argv[]) {
 ### 工具节点
 - `RandomInt` - 生成随机整数
 - `Sleep` - 暂停执行
+- `Sort` - 对向量排序
+- `Void` - 空操作 / 丢弃值
+
+### 容器节点
+- `StdVector` / `StdVectorPush` - `std::vector` 操作
+- `StdQueue` / `StdQueuePush` - `std::queue` 操作
+- `StdStack` / `StdStackPush` - `std::stack` 操作
+- `StdDeque` / `StdDequePush` - `std::deque` 操作
+- `StdSet` / `StdSetInsert` - `std::set` 操作
+- `StdUnorderedSet` / `StdUnorderedSetInsert` - `std::unordered_set` 操作
+- `StdPair` - `std::pair` 构造器
+- `Struct` - 用户自定义结构体
 
 ### Qt UI 节点
 - `Color` - RGBA 颜色值
@@ -114,41 +131,41 @@ int main(int argc, char* argv[]) {
 ```cpp
 // 整数常量
 auto* intNode = editor.addNode("ConstantInt", 80, 60);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantIntNode*>(intNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantIntNode*>(intNode))
     constNode->setValue(42);
 
 // 浮点数常量
 auto* floatNode = editor.addNode("ConstantFloat", 80, 160);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantFloatNode*>(floatNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantFloatNode*>(floatNode))
     constNode->setValue(3.14159);
 
 // 布尔常量
 auto* boolNode = editor.addNode("ConstantBool", 80, 260);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantBoolNode*>(boolNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantBoolNode*>(boolNode))
     constNode->setValue(true);
 
 // 字符串常量
 auto* strNode = editor.addNode("ConstantString", 80, 360);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantStringNode*>(strNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantStringNode*>(strNode))
     constNode->setValue("Hello World");
 ```
 
 ## 主题管理
 
 ```cpp
-#include <QBlock/ThemeManager.h>
+#include <qcdot/ThemeManager.h>
 
 // 获取当前主题
-auto theme = QBlock::ThemeManager::instance().currentTheme();
+auto theme = qcdot::ThemeManager::instance().currentTheme();
 
 // 切换到深色模式
-QBlock::ThemeManager::instance().setTheme(QBlock::ThemeMode::Dark);
+qcdot::ThemeManager::instance().setTheme(qcdot::ThemeMode::Dark);
 
 // 切换到浅色模式
-QBlock::ThemeManager::instance().setTheme(QBlock::ThemeMode::Light);
+qcdot::ThemeManager::instance().setTheme(qcdot::ThemeMode::Light);
 
 // 监听主题变化
-QBlock::ThemeManager::onThemeChanged([]() {
+qcdot::ThemeManager::onThemeChanged([]() {
     // 更新您的 UI
 });
 ```
@@ -156,46 +173,46 @@ QBlock::ThemeManager::onThemeChanged([]() {
 ## 语言管理
 
 ```cpp
-#include <QBlock/Translator.h>
+#include <qcdot/Translator.h>
 
 // 设置语言为中文
-QBlock::Translator::setLanguage("zh");
+qcdot::Translator::setLanguage("zh");
 
 // 设置语言为英文
-QBlock::Translator::setLanguage("en");
+qcdot::Translator::setLanguage("en");
 
 // 获取翻译字符串
-QString title = QBlock::Translator::tr("app.title");
+QString title = qcdot::Translator::tr("app.title");
 ```
 
 ## 保存和加载
 
 ```cpp
 // 保存图到文件
-editor.saveGraph("my_graph.qcd");
+editor.saveToFile("my_graph.qcd");
 
 // 从文件加载图
-editor.loadGraph("my_graph.qcd");
+editor.loadFromFile("my_graph.qcd");
 ```
 
 ## 自定义节点
 
-创建自定义节点，继承自 `QBlock::Node`：
+创建自定义节点，继承自 `qcdot::Node`：
 
 ```cpp
-class MyCustomNode : public QBlock::Node {
+class MyCustomNode : public qcdot::Node {
 public:
     MyCustomNode() {
-        addInput("input", QBlock::DataType::Integer);
-        addOutput("output", QBlock::DataType::Integer);
+        addInput("input", qcdot::DataType::Integer);
+        addOutput("output", qcdot::DataType::Integer);
     }
-    
+
     std::string typeName() const override { return "MyCustomNode"; }
     std::string nodeTitle() const override { return "My Custom Node"; }
-    
-    void process(const QBlock::VariantMap& in, QBlock::VariantMap& out) override {
+
+    void process(const qcdot::VariantMap& in, qcdot::VariantMap& out) override {
         int value = in.at("input").toInt();
-        out["output"] = QBlock::Variant(value * 2);
+        out["output"] = qcdot::Variant(value * 2);
     }
 };
 ```

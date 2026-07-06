@@ -1,7 +1,7 @@
-#ifndef QBLOCK_NODE_PICKER_DIALOG_H
-#define QBLOCK_NODE_PICKER_DIALOG_H
+#ifndef QCDOT_NODE_PICKER_DIALOG_H
+#define QCDOT_NODE_PICKER_DIALOG_H
 
-#include <QBlock/DataType.h>
+#include <qcdot/DataType.h>
 #include <QDialog>
 #include <QListWidget>
 #include <QString>
@@ -11,7 +11,7 @@
 class QLabel;
 class QPushButton;
 
-namespace QBlock {
+namespace qcdot {
 
 /// A dialog that appears when dragging a connection to a blank area.
 /// Shows a list of compatible nodes that can be created and auto-connected.
@@ -39,6 +39,6 @@ private:
     QPushButton* cancelBtn_ = nullptr;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODE_PICKER_DIALOG_H
+#endif // QCDOT_NODE_PICKER_DIALOG_H

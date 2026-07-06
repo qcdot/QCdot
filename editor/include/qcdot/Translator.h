@@ -1,5 +1,5 @@
-#ifndef QBLOCK_TRANSLATOR_H
-#define QBLOCK_TRANSLATOR_H
+#ifndef QCDOT_TRANSLATOR_H
+#define QCDOT_TRANSLATOR_H
 
 #include <QString>
 #include <QStringList>
@@ -7,7 +7,7 @@
 #include <functional>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Lightweight translation manager (Chinese/English).
 /// Uses embedded JSON language data — no external files needed.
@@ -36,6 +36,6 @@ private:
     static std::vector<Callback> s_callbacks;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_TRANSLATOR_H
+#endif // QCDOT_TRANSLATOR_H

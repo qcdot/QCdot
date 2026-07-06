@@ -1,11 +1,11 @@
-#include <QBlock/ConnectionWidget.h>
-#include <QBlock/PortWidget.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/ConnectionWidget.h>
+#include <qcdot/PortWidget.h>
+#include <qcdot/ThemeManager.h>
 #include <QPainter>
 #include <QtMath>
 #include <QGraphicsSceneMouseEvent>
 
-namespace QBlock {
+namespace qcdot {
 
 ConnectionWidget::ConnectionWidget(PortWidget* source, PortWidget* target,
                                    Connection* conn, QGraphicsItem* parent)
@@ -198,4 +198,4 @@ void TempConnectionWidget::paint(QPainter* painter, const QStyleOptionGraphicsIt
     painter->drawPath(path());
 }
 
-} // namespace QBlock
+} // namespace qcdot

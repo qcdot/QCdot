@@ -1,8 +1,8 @@
-#ifndef QBLOCK_BUILTIN_NODES_H
-#define QBLOCK_BUILTIN_NODES_H
+#ifndef QCDOT_BUILTIN_NODES_H
+#define QCDOT_BUILTIN_NODES_H
 
-#include <QBlock/Node.h>
-#include <QBlock/NodeGraph.h>
+#include <qcdot/Node.h>
+#include <qcdot/NodeGraph.h>
 #include <cmath>
 #include <vector>
 #include <string>
@@ -19,9 +19,12 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <thread>
+#include <chrono>
 #endif
 
-namespace QBlock {
+namespace qcdot {
 namespace Builtin {
 
 // ============================================================================
@@ -839,7 +842,7 @@ public:
     void process(const VariantMap& in, VariantMap& out) override {
         auto it = in.find("value");
         if (it != in.end()) {
-            std::cout << "[QBlock Print] " << it->second.toString().toStdString() << std::endl;
+            std::cout << "[qcdot Print] " << it->second.toString().toStdString() << std::endl;
             out["out"] = it->second;
         }
     }
@@ -1634,6 +1637,6 @@ inline void registerBuiltinNodes(const std::string& category, NodeGraph& graph) 
 }
 
 } // namespace Builtin
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_BUILTIN_NODES_H
+#endif // QCDOT_BUILTIN_NODES_H

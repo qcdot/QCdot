@@ -1,9 +1,9 @@
-#include <QBlock/NodePickerDialog.h>
-#include <QBlock/BuiltinNodes.h>
-#include <QBlock/DataType.h>
-#include <QBlock/Translator.h>
-#include <QBlock/NodeIconFactory.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/NodePickerDialog.h>
+#include <qcdot/BuiltinNodes.h>
+#include <qcdot/DataType.h>
+#include <qcdot/Translator.h>
+#include <qcdot/NodeIconFactory.h>
+#include <qcdot/ThemeManager.h>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -13,7 +13,7 @@
 #include <QListWidgetItem>
 #include <QStringList>
 
-namespace QBlock {
+namespace qcdot {
 
 NodePickerDialog::NodePickerDialog(DataType sourceType, bool isInput,
                                    std::function<std::vector<std::string>()> typeLister,
@@ -124,7 +124,7 @@ void NodePickerDialog::populateList(DataType sourceType, bool /*isInput*/,
 
     for (const auto& typeName : compatibleTypes) {
         auto* item = new QListWidgetItem(list_);
-        item->setIcon(QIcon(QBlock::createNodeIcon(typeName)));
+        item->setIcon(QIcon(qcdot::createNodeIcon(typeName)));
 
         // In Chinese-only mode: icon only, no text, tooltip is translated name
         if (Translator::currentLanguage() != QStringLiteral("zh")) {
@@ -142,4 +142,4 @@ void NodePickerDialog::populateList(DataType sourceType, bool /*isInput*/,
     }
 }
 
-} // namespace QBlock
+} // namespace qcdot

@@ -1,10 +1,10 @@
-#ifndef QBLOCK_EXAMPLE_NODE_PALETTE_H
-#define QBLOCK_EXAMPLE_NODE_PALETTE_H
+#ifndef QCDOT_EXAMPLE_NODE_PALETTE_H
+#define QCDOT_EXAMPLE_NODE_PALETTE_H
 
-#include <QBlock/NodeEditor.h>
-#include <QBlock/Translator.h>
-#include <QBlock/NodeIconFactory.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/NodeEditor.h>
+#include <qcdot/Translator.h>
+#include <qcdot/NodeIconFactory.h>
+#include <qcdot/ThemeManager.h>
 #include <QListWidget>
 #include <QComboBox>
 #include <QLineEdit>
@@ -12,10 +12,40 @@
 #include <QMimeData>
 #include <QVBoxLayout>
 
+/// QListWidget subclass that emits a custom MIME type on drag,
+/// allowing EditorScene to accept the drop and create a new node.
+class NodeTypeListWidget : public QListWidget {
+    Q_OBJECT
+public:
+    explicit NodeTypeListWidget(QWidget* parent = nullptr) : QListWidget(parent) {}
+
+protected:
+    void startDrag(Qt::DropActions supportedActions) override {
+        QListWidgetItem* item = currentItem();
+        if (!item) return;
+
+        QByteArray typeData = item->data(Qt::UserRole).toByteArray();
+        if (typeData.isEmpty()) {
+            // Fallback: use the item text as the type name
+            typeData = item->text().toUtf8();
+        }
+
+        QMimeData* mimeData = new QMimeData;
+        mimeData->setText(item->text());
+        mimeData->setData("application/x-qcdot-node-type", typeData);
+
+        QDrag* drag = new QDrag(this);
+        drag->setMimeData(mimeData);
+        QPixmap pix = item->icon().pixmap(32, 32);
+        if (!pix.isNull()) drag->setPixmap(pix);
+        drag->exec(supportedActions);
+    }
+};
+
 class NodePalette : public QWidget {
     Q_OBJECT
 public:
-    explicit NodePalette(QBlock::NodeEditor* editor, QWidget* parent = nullptr)
+    explicit NodePalette(qcdot::NodeEditor* editor, QWidget* parent = nullptr)
         : QWidget(parent), editor_(editor)
     {
         setObjectName(QStringLiteral("NodePalette"));
@@ -25,13 +55,13 @@ public:
         layout->setSpacing(4);
 
         searchEdit_ = new QLineEdit(this);
-        searchEdit_->setPlaceholderText(QBlock::Translator::tr("palette.search"));
+        searchEdit_->setPlaceholderText(qcdot::Translator::tr("palette.search"));
         layout->addWidget(searchEdit_);
 
         categoryCombo_ = new QComboBox(this);
         layout->addWidget(categoryCombo_);
 
-        list_ = new QListWidget(this);
+        list_ = new NodeTypeListWidget(this);
         list_->setIconSize(QSize(32, 32));
         list_->setSpacing(8);
         list_->setViewMode(QListView::IconMode);
@@ -50,13 +80,13 @@ public:
         applyThemeStyle();
 
         if (editor_) {
-            connect(editor_, &QBlock::NodeEditor::languageChanged, this, [this]() {
+            connect(editor_, &qcdot::NodeEditor::languageChanged, this, [this]() {
                 refreshList();
                 updateTranslations();
             });
         }
 
-        QBlock::ThemeManager::onThemeChanged([this]() {
+        qcdot::ThemeManager::onThemeChanged([this]() {
             applyThemeStyle();
         });
 
@@ -145,19 +175,19 @@ private:
     }
 
     void populateCategories() {
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.all"), QStringLiteral("all"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.math"), QStringLiteral("math"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.logic"), QStringLiteral("logic"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.data"), QStringLiteral("data"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.convert"), QStringLiteral("convert"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.string"), QStringLiteral("string"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.output"), QStringLiteral("output"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.bitwise"), QStringLiteral("bitwise"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.file"), QStringLiteral("file"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.util"), QStringLiteral("util"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.qt"), QStringLiteral("qt"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.container"), QStringLiteral("container"));
-        categoryCombo_->addItem(QBlock::Translator::tr("palette.entry"), QStringLiteral("entry"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.all"), QStringLiteral("all"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.math"), QStringLiteral("math"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.logic"), QStringLiteral("logic"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.data"), QStringLiteral("data"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.convert"), QStringLiteral("convert"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.string"), QStringLiteral("string"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.output"), QStringLiteral("output"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.bitwise"), QStringLiteral("bitwise"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.file"), QStringLiteral("file"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.util"), QStringLiteral("util"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.qt"), QStringLiteral("qt"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.container"), QStringLiteral("container"));
+        categoryCombo_->addItem(qcdot::Translator::tr("palette.entry"), QStringLiteral("entry"));
     }
 
     void refreshList() {
@@ -171,7 +201,7 @@ private:
                 continue;
             }
 
-            QString display = QBlock::Translator::tr(entry.trKey);
+            QString display = qcdot::Translator::tr(entry.trKey);
             if (display == entry.trKey) display = entry.typeName;
 
             bool matchSearch = searchText.isEmpty();
@@ -182,7 +212,7 @@ private:
             if (!matchSearch) continue;
 
             auto* item = new QListWidgetItem(display, list_);
-            item->setIcon(QIcon(QBlock::createNodeIcon(entry.typeName.toStdString())));
+            item->setIcon(QIcon(qcdot::createNodeIcon(entry.typeName.toStdString())));
             item->setData(Qt::UserRole, entry.typeName);
             item->setTextAlignment(Qt::AlignHCenter | Qt::AlignBottom);
             item->setToolTip(display);
@@ -190,8 +220,8 @@ private:
     }
 
     void updateTranslations() {
-        setWindowTitle(QBlock::Translator::tr("palette.nodes"));
-        searchEdit_->setPlaceholderText(QBlock::Translator::tr("palette.search"));
+        setWindowTitle(qcdot::Translator::tr("palette.nodes"));
+        searchEdit_->setPlaceholderText(qcdot::Translator::tr("palette.search"));
 
         int currentIndex = categoryCombo_->currentIndex();
         categoryCombo_->clear();
@@ -200,12 +230,12 @@ private:
     }
 
     void applyThemeStyle() {
-        QColor bg = QBlock::ThemeManager::panelBg();
-        QColor border = QBlock::ThemeManager::panelBorder();
-        QColor listBg = QBlock::ThemeManager::listBg();
-        QColor itemHover = QBlock::ThemeManager::listItemHover();
-        QColor itemSel = QBlock::ThemeManager::listItemSelected();
-        QColor text = QBlock::ThemeManager::textPrimary();
+        QColor bg = qcdot::ThemeManager::panelBg();
+        QColor border = qcdot::ThemeManager::panelBorder();
+        QColor listBg = qcdot::ThemeManager::listBg();
+        QColor itemHover = qcdot::ThemeManager::listItemHover();
+        QColor itemSel = qcdot::ThemeManager::listItemSelected();
+        QColor text = qcdot::ThemeManager::textPrimary();
 
         QString style = QString(
             "QWidget#NodePalette { background: %1; border: 1px solid %2; }"
@@ -221,11 +251,11 @@ private:
         setStyleSheet(style);
     }
 
-    QBlock::NodeEditor* editor_;
+    qcdot::NodeEditor* editor_;
     std::vector<NodeEntry> nodes_;
     QLineEdit* searchEdit_ = nullptr;
     QComboBox* categoryCombo_ = nullptr;
-    QListWidget* list_ = nullptr;
+    NodeTypeListWidget* list_ = nullptr;
 };
 
-#endif // QBLOCK_EXAMPLE_NODE_PALETTE_H
+#endif // QCDOT_EXAMPLE_NODE_PALETTE_H

@@ -1,11 +1,11 @@
-#ifndef QBLOCK_DATATYPE_H
-#define QBLOCK_DATATYPE_H
+#ifndef QCDOT_DATATYPE_H
+#define QCDOT_DATATYPE_H
 
 #include <QColor>
 #include <QString>
 #include <cstdint>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Data types supported by the static type system.
 /// Each type has an associated color for visual identification.
@@ -68,6 +68,6 @@ inline bool typesCompatible(DataType a, DataType b) {
     return false;
 }
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_DATATYPE_H
+#endif // QCDOT_DATATYPE_H

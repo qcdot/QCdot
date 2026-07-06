@@ -1,11 +1,11 @@
-#ifndef QBLOCK_THEME_MANAGER_H
-#define QBLOCK_THEME_MANAGER_H
+#ifndef QCDOT_THEME_MANAGER_H
+#define QCDOT_THEME_MANAGER_H
 
 #include <QColor>
 #include <QString>
 #include <functional>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Theme mode for the editor.
 enum class ThemeMode {
@@ -58,6 +58,6 @@ private:
     ThemeMode theme_ = ThemeMode::Dark;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_THEME_MANAGER_H
+#endif // QCDOT_THEME_MANAGER_H

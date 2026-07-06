@@ -1,11 +1,11 @@
-#ifndef QBLOCK_PORT_WIDGET_H
-#define QBLOCK_PORT_WIDGET_H
+#ifndef QCDOT_PORT_WIDGET_H
+#define QCDOT_PORT_WIDGET_H
 
-#include <QBlock/Port.h>
+#include <qcdot/Port.h>
 #include <QGraphicsEllipseItem>
 #include <QPainterPath>
 
-namespace QBlock {
+namespace qcdot {
 
 class ConnectionWidget;
 class NodeWidget;
@@ -46,6 +46,6 @@ private:
     static constexpr float kDeleteButtonSize = 14.0f;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_PORT_WIDGET_H
+#endif // QCDOT_PORT_WIDGET_H

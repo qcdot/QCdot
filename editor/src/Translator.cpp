@@ -1,6 +1,6 @@
-#include <QBlock/Translator.h>
+#include <qcdot/Translator.h>
 
-namespace QBlock {
+namespace qcdot {
 
 QString Translator::s_currentLang = QStringLiteral("en");
 std::vector<Translator::Callback> Translator::s_callbacks;
@@ -539,4 +539,4 @@ const QHash<QString, QHash<QString, QString>>& Translator::data() {
     return s_data;
 }
 
-} // namespace QBlock
+} // namespace qcdot

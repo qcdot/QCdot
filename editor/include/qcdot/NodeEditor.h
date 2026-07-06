@@ -1,10 +1,10 @@
-#ifndef QBLOCK_NODE_EDITOR_H
-#define QBLOCK_NODE_EDITOR_H
+#ifndef QCDOT_NODE_EDITOR_H
+#define QCDOT_NODE_EDITOR_H
 
 #include "EditorScene.h"
-#include <QBlock/NodeGraph.h>
-#include <QBlock/ExecutionEngine.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/NodeGraph.h>
+#include <qcdot/ExecutionEngine.h>
+#include <qcdot/ThemeManager.h>
 #include <QGraphicsView>
 #include <QToolBar>
 #include <QMenu>
@@ -12,7 +12,7 @@
 #include <QWidget>
 #include <memory>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Main editor widget that provides the full node editing experience.
 /// Contains a QGraphicsView, toolbar with settings menu, and manages the EditorScene.
@@ -117,6 +117,6 @@ private:
     bool qtCompatibleMode_ = false;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODE_EDITOR_H
+#endif // QCDOT_NODE_EDITOR_H

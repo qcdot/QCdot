@@ -1,10 +1,10 @@
-#ifndef QBLOCK_INLINE_NODE_PICKER_H
-#define QBLOCK_INLINE_NODE_PICKER_H
+#ifndef QCDOT_INLINE_NODE_PICKER_H
+#define QCDOT_INLINE_NODE_PICKER_H
 
-#include <QBlock/DataType.h>
-#include <QBlock/Translator.h>
-#include <QBlock/NodeIconFactory.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/DataType.h>
+#include <qcdot/Translator.h>
+#include <qcdot/NodeIconFactory.h>
+#include <qcdot/ThemeManager.h>
 #include <QGraphicsScene>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsPathItem>
@@ -15,7 +15,7 @@
 #include <functional>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 class InlineNodePicker : public QGraphicsProxyWidget {
     Q_OBJECT
@@ -196,7 +196,7 @@ private:
             if (!matchSearch) continue;
 
             auto* item = new QListWidgetItem(list_);
-            item->setIcon(QIcon(QBlock::createNodeIcon(typeName)));
+            item->setIcon(QIcon(qcdot::createNodeIcon(typeName)));
             item->setText(display);
             item->setToolTip(display);
             item->setData(Qt::UserRole, QString::fromStdString(typeName));
@@ -213,6 +213,6 @@ private:
     QGraphicsPathItem* dashedLine_ = nullptr;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_INLINE_NODE_PICKER_H
+#endif // QCDOT_INLINE_NODE_PICKER_H

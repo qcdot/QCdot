@@ -1,6 +1,6 @@
 # QCdot Usage Guide
 
-**Version**: 0.1.0
+**Version**: 0.2.0
 
 [中文版本](USAGE_zh.md)
 
@@ -16,26 +16,26 @@ QCdot is a visual programming engine that allows you to create node-based applic
 ### Basic Setup
 
 ```cpp
-#include <QBlock/NodeEditor.h>
-#include <QBlock/BuiltinNodes.h>
+#include <qcdot/NodeEditor.h>
+#include <qcdot/BuiltinNodes.h>
 #include <QApplication>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    
+
     // Create the node editor
-    QBlock::NodeEditor editor;
-    
+    qcdot::NodeEditor editor;
+
     // Add nodes
     auto* intNode = editor.addNode("ConstantInt", 100, 100);
     auto* addNode = editor.addNode("Add", 300, 100);
-    
+
     // Connect nodes
     editor.graph()->connect(
         intNode->outputs()[0].get(),
         addNode->inputs()[0].get()
     );
-    
+
     editor.show();
     return app.exec();
 }
@@ -60,6 +60,11 @@ int main(int argc, char* argv[]) {
 - `Or` - Logical OR
 - `Not` - Logical NOT
 - `IfElse` - Conditional branching
+- `IfElseBranch` - Multi-branch conditional
+
+### Control Flow Nodes
+- `InputBlock` - Graph entry point
+- `EventBlock` - Event-driven entry point
 
 ### Data Nodes
 - `ConstantInt` - Integer constant (use `setValue(int64_t)`)
@@ -94,6 +99,18 @@ int main(int argc, char* argv[]) {
 ### Utility Nodes
 - `RandomInt` - Generate random integer
 - `Sleep` - Pause execution
+- `Sort` - Sort a vector
+- `Void` - No-op / discard value
+
+### Container Nodes
+- `StdVector` / `StdVectorPush` - `std::vector` operations
+- `StdQueue` / `StdQueuePush` - `std::queue` operations
+- `StdStack` / `StdStackPush` - `std::stack` operations
+- `StdDeque` / `StdDequePush` - `std::deque` operations
+- `StdSet` / `StdSetInsert` - `std::set` operations
+- `StdUnorderedSet` / `StdUnorderedSetInsert` - `std::unordered_set` operations
+- `StdPair` - `std::pair` constructor
+- `Struct` - User-defined struct
 
 ### Qt UI Nodes
 - `Color` - RGBA color value
@@ -114,41 +131,41 @@ int main(int argc, char* argv[]) {
 ```cpp
 // Integer constants
 auto* intNode = editor.addNode("ConstantInt", 80, 60);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantIntNode*>(intNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantIntNode*>(intNode))
     constNode->setValue(42);
 
 // Float constants
 auto* floatNode = editor.addNode("ConstantFloat", 80, 160);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantFloatNode*>(floatNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantFloatNode*>(floatNode))
     constNode->setValue(3.14159);
 
 // Boolean constants
 auto* boolNode = editor.addNode("ConstantBool", 80, 260);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantBoolNode*>(boolNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantBoolNode*>(boolNode))
     constNode->setValue(true);
 
 // String constants
 auto* strNode = editor.addNode("ConstantString", 80, 360);
-if (auto* constNode = dynamic_cast<QBlock::Builtin::ConstantStringNode*>(strNode))
+if (auto* constNode = dynamic_cast<qcdot::Builtin::ConstantStringNode*>(strNode))
     constNode->setValue("Hello World");
 ```
 
 ## Theme Management
 
 ```cpp
-#include <QBlock/ThemeManager.h>
+#include <qcdot/ThemeManager.h>
 
 // Get current theme
-auto theme = QBlock::ThemeManager::instance().currentTheme();
+auto theme = qcdot::ThemeManager::instance().currentTheme();
 
 // Switch to dark mode
-QBlock::ThemeManager::instance().setTheme(QBlock::ThemeMode::Dark);
+qcdot::ThemeManager::instance().setTheme(qcdot::ThemeMode::Dark);
 
 // Switch to light mode
-QBlock::ThemeManager::instance().setTheme(QBlock::ThemeMode::Light);
+qcdot::ThemeManager::instance().setTheme(qcdot::ThemeMode::Light);
 
 // Listen for theme changes
-QBlock::ThemeManager::onThemeChanged([]() {
+qcdot::ThemeManager::onThemeChanged([]() {
     // Update your UI
 });
 ```
@@ -156,46 +173,46 @@ QBlock::ThemeManager::onThemeChanged([]() {
 ## Language Management
 
 ```cpp
-#include <QBlock/Translator.h>
+#include <qcdot/Translator.h>
 
 // Set language to Chinese
-QBlock::Translator::setLanguage("zh");
+qcdot::Translator::setLanguage("zh");
 
 // Set language to English
-QBlock::Translator::setLanguage("en");
+qcdot::Translator::setLanguage("en");
 
 // Get translated string
-QString title = QBlock::Translator::tr("app.title");
+QString title = qcdot::Translator::tr("app.title");
 ```
 
 ## Saving and Loading
 
 ```cpp
 // Save graph to file
-editor.saveGraph("my_graph.qcd");
+editor.saveToFile("my_graph.qcd");
 
 // Load graph from file
-editor.loadGraph("my_graph.qcd");
+editor.loadFromFile("my_graph.qcd");
 ```
 
 ## Custom Nodes
 
-To create custom nodes, inherit from `QBlock::Node`:
+To create custom nodes, inherit from `qcdot::Node`:
 
 ```cpp
-class MyCustomNode : public QBlock::Node {
+class MyCustomNode : public qcdot::Node {
 public:
     MyCustomNode() {
-        addInput("input", QBlock::DataType::Integer);
-        addOutput("output", QBlock::DataType::Integer);
+        addInput("input", qcdot::DataType::Integer);
+        addOutput("output", qcdot::DataType::Integer);
     }
-    
+
     std::string typeName() const override { return "MyCustomNode"; }
     std::string nodeTitle() const override { return "My Custom Node"; }
-    
-    void process(const QBlock::VariantMap& in, QBlock::VariantMap& out) override {
+
+    void process(const qcdot::VariantMap& in, qcdot::VariantMap& out) override {
         int value = in.at("input").toInt();
-        out["output"] = QBlock::Variant(value * 2);
+        out["output"] = qcdot::Variant(value * 2);
     }
 };
 ```

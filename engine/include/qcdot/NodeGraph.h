@@ -1,5 +1,5 @@
-#ifndef QBLOCK_NODEGRAPH_H
-#define QBLOCK_NODEGRAPH_H
+#ifndef QCDOT_NODEGRAPH_H
+#define QCDOT_NODEGRAPH_H
 
 #include "Node.h"
 #include "Connection.h"
@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Container for a graph of nodes and their connections.
 /// Owns all nodes and connections within a single graph.
@@ -133,6 +133,6 @@ private:
     uint64_t nextConnectionId_ = 1;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODEGRAPH_H
+#endif // QCDOT_NODEGRAPH_H

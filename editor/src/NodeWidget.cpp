@@ -1,9 +1,10 @@
-#include <QBlock/NodeWidget.h>
-#include <QBlock/PortWidget.h>
-#include <QBlock/ConnectionWidget.h>
-#include <QBlock/Translator.h>
-#include <QBlock/ThemeManager.h>
-#include <QBlock/BuiltinNodes.h>
+#include <qcdot/NodeWidget.h>
+#include <qcdot/PortWidget.h>
+#include <qcdot/ConnectionWidget.h>
+#include <qcdot/EditorScene.h>
+#include <qcdot/Translator.h>
+#include <qcdot/ThemeManager.h>
+#include <qcdot/BuiltinNodes.h>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
@@ -12,7 +13,7 @@
 #include <QFontMetrics>
 #include <QInputDialog>
 
-namespace QBlock {
+namespace qcdot {
 
 NodeWidget::NodeWidget(Node* node)
     : node_(node)
@@ -314,7 +315,12 @@ void NodeWidget::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
             Translator::currentLanguage() == "zh" ? QStringLiteral("输入整数：") : QStringLiteral("Enter integer:"),
             static_cast<int>(ci->value()),
             -2147483647, 2147483647, 1, &ok);
-        if (ok) ci->setValue(static_cast<int64_t>(v));
+        if (ok) {
+            ci->setValue(static_cast<int64_t>(v));
+            if (scene()) {
+                static_cast<EditorScene*>(scene())->emit graphModified();
+            }
+        }
         return;
     }
     if (auto* cf = dynamic_cast<Builtin::ConstantFloatNode*>(node_)) {
@@ -325,7 +331,12 @@ void NodeWidget::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
             Translator::currentLanguage() == "zh" ? QStringLiteral("输入浮点数：") : QStringLiteral("Enter float:"),
             cf->value(),
             -1000000.0, 1000000.0, 6, &ok);
-        if (ok) cf->setValue(v);
+        if (ok) {
+            cf->setValue(v);
+            if (scene()) {
+                static_cast<EditorScene*>(scene())->emit graphModified();
+            }
+        }
         return;
     }
     if (auto* cb = dynamic_cast<Builtin::ConstantBoolNode*>(node_)) {
@@ -340,6 +351,9 @@ void NodeWidget::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
             items, cb->value() ? 0 : 1, false, &ok);
         if (ok && !item.isEmpty()) {
             cb->setValue(items.indexOf(item) == 0);
+            if (scene()) {
+                static_cast<EditorScene*>(scene())->emit graphModified();
+            }
         }
         return;
     }
@@ -351,10 +365,15 @@ void NodeWidget::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
             Translator::currentLanguage() == "zh" ? QStringLiteral("输入文本：") : QStringLiteral("Enter text:"),
             QLineEdit::Normal,
             QString::fromStdString(cs->value()), &ok);
-        if (ok) cs->setValue(text.toStdString());
+        if (ok) {
+            cs->setValue(text.toStdString());
+            if (scene()) {
+                static_cast<EditorScene*>(scene())->emit graphModified();
+            }
+        }
         return;
     }
     QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
-} // namespace QBlock
+} // namespace qcdot

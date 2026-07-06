@@ -1,14 +1,14 @@
-#ifndef QBLOCK_NODE_ICON_FACTORY_H
-#define QBLOCK_NODE_ICON_FACTORY_H
+#ifndef QCDOT_NODE_ICON_FACTORY_H
+#define QCDOT_NODE_ICON_FACTORY_H
 
-#include <QBlock/BuiltinNodes.h>
-#include <QBlock/DataType.h>
+#include <qcdot/BuiltinNodes.h>
+#include <qcdot/DataType.h>
 #include <QPixmap>
 #include <QPainter>
 #include <QString>
 #include <string>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Creates a 32x32 icon representing a node type by its port configuration.
 inline QPixmap createNodeIcon(const std::string& typeName) {
@@ -76,6 +76,6 @@ inline QPixmap createNodeIcon(const std::string& typeName) {
     return icon;
 }
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODE_ICON_FACTORY_H
+#endif // QCDOT_NODE_ICON_FACTORY_H

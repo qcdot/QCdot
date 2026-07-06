@@ -1,5 +1,5 @@
-#ifndef QBLOCK_NODE_H
-#define QBLOCK_NODE_H
+#ifndef QCDOT_NODE_H
+#define QCDOT_NODE_H
 
 #include "Port.h"
 #include "Variant.h"
@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Map of port names to values, used for node I/O.
 using VariantMap = std::map<std::string, Variant>;
@@ -143,6 +143,6 @@ inline std::unique_ptr<Node> createNode(
     return node;
 }
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODE_H
+#endif // QCDOT_NODE_H

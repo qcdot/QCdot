@@ -1,7 +1,7 @@
-#include <QBlock/ThemeManager.h>
+#include <qcdot/ThemeManager.h>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 ThemeManager& ThemeManager::instance() {
     static ThemeManager mgr;
@@ -158,4 +158,4 @@ QColor ThemeManager::shadow() {
     return instance().theme_ == ThemeMode::Dark ? kDarkShadow : kLightShadow;
 }
 
-} // namespace QBlock
+} // namespace qcdot

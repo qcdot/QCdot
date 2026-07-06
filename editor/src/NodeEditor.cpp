@@ -1,8 +1,8 @@
-#include <QBlock/NodeEditor.h>
-#include <QBlock/BuiltinNodes.h>
-#include <QBlock/Serializer.h>
-#include <QBlock/Translator.h>
-#include <QBlock/Port.h>
+#include <qcdot/NodeEditor.h>
+#include <qcdot/BuiltinNodes.h>
+#include <qcdot/Serializer.h>
+#include <qcdot/Translator.h>
+#include <qcdot/Port.h>
 #include <QAction>
 #include <QFile>
 #include <QFileDialog>
@@ -17,7 +17,11 @@
 #include <QMimeData>
 #include <QKeyEvent>
 
-namespace QBlock {
+namespace {
+    bool g_qtCompatibleMode = false;
+}
+
+namespace qcdot {
 
 namespace {
     QString settingsPath() {
@@ -135,6 +139,7 @@ void NodeEditor::setupUI() {
     layout_->addWidget(view_);
 
     connect(scene_, &EditorScene::graphModified, this, &NodeEditor::graphModified);
+    connect(scene_, &EditorScene::graphModified, this, &NodeEditor::pushUndoState);
 }
 
 void NodeEditor::setupSettingsMenu(QToolBar* toolbar) {
@@ -711,20 +716,37 @@ void NodeEditor::executeSignal(Node* entryNode) {
 }
 
 std::vector<std::string> NodeEditor::listNodeTypes() const {
-    // Known builtin node types
     return {
+        // Arithmetic
         "Add", "Subtract", "Multiply", "Divide", "Modulo", "Power", "Sqrt",
+        // Logic
         "Equal", "GreaterThan", "LessThan", "And", "Or", "Not",
-        "IfElse", "IfElseBranch",
+        // Control flow
+        "IfElse", "IfElseBranch", "InputBlock", "EventBlock",
+        // Constants
         "ConstantInt", "ConstantFloat", "ConstantBool", "ConstantString",
+        // Variables
         "Variable", "Counter",
+        // Type conversion
         "IntToFloat", "FloatToInt", "ToString",
+        // String
         "StringConcat", "StringLength", "StringSubstring",
+        // I/O
         "Print",
+        // Binary
         "BinaryAnd", "BinaryOr", "BinaryXor", "ShiftLeft", "ShiftRight",
+        // File
         "FileReadText", "FileWriteText", "FileReadBinary",
-        "RandomInt", "Sleep",
-        "Variable", "Counter",
+        // Misc
+        "RandomInt", "Sleep", "Sort", "Void",
+        // Containers
+        "StdVector", "StdVectorPush",
+        "StdQueue", "StdQueuePush",
+        "StdStack", "StdStackPush",
+        "StdDeque", "StdDequePush",
+        "StdSet", "StdSetInsert",
+        "StdUnorderedSet", "StdUnorderedSetInsert",
+        "StdPair", "Struct",
         // Qt UI nodes
         "Color", "QtMainWindow", "QtButton", "QtLabel", "QtLineEdit",
         "QtTabWidget", "QtLayout", "QtSlider", "QtCheckBox",
@@ -742,7 +764,6 @@ Node* NodeEditor::addNode(const std::string& typeName, float x, float y) {
     node->setPosition(x, y);
     auto* ptr = g->addNode(std::move(node));
     scene_->addNodeWidget(ptr);
-    pushUndoState();
     emit graphModified();
     return ptr;
 }
@@ -816,16 +837,16 @@ void NodeEditor::copyNodes() {
 
     QClipboard* clipboard = QApplication::clipboard();
     QMimeData* mimeData = new QMimeData();
-    mimeData->setData("application/x-qblock-nodes", data);
+    mimeData->setData("application/x-qcdot-nodes", data);
     clipboard->setMimeData(mimeData);
 }
 
 void NodeEditor::pasteNodes() {
     QClipboard* clipboard = QApplication::clipboard();
     const QMimeData* mimeData = clipboard->mimeData();
-    if (!mimeData || !mimeData->hasFormat("application/x-qblock-nodes")) return;
+    if (!mimeData || !mimeData->hasFormat("application/x-qcdot-nodes")) return;
 
-    QByteArray data = mimeData->data("application/x-qblock-nodes");
+    QByteArray data = mimeData->data("application/x-qcdot-nodes");
     QDataStream stream(&data, QIODevice::ReadOnly);
 
     quint32 count = 0;
@@ -990,13 +1011,11 @@ void NodeEditor::selectAllNodes() {
 }
 
 bool NodeEditor::qtCompatibleModeGlobal() {
-    static bool s_qtCompatible = false;
-    return s_qtCompatible;
+    return g_qtCompatibleMode;
 }
 
 void NodeEditor::setQtCompatibleModeGlobal(bool enabled) {
-    static bool s_qtCompatible = false;
-    s_qtCompatible = enabled;
+    g_qtCompatibleMode = enabled;
 }
 
 void NodeEditor::setQtCompatibleMode(bool enabled) {
@@ -1006,4 +1025,4 @@ void NodeEditor::setQtCompatibleMode(bool enabled) {
     }
 }
 
-} // namespace QBlock
+} // namespace qcdot

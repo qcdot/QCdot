@@ -1,8 +1,8 @@
 #include <QApplication>
-#include <QBlock/NodeEditor.h>
-#include <QBlock/Translator.h>
-#include <QBlock/ThemeManager.h>
-#include <QBlock/BuiltinNodes.h>
+#include <qcdot/NodeEditor.h>
+#include <qcdot/Translator.h>
+#include <qcdot/ThemeManager.h>
+#include <qcdot/BuiltinNodes.h>
 #include "NodePalette.h"
 #include "ConsoleWidget.h"
 #include "ConsoleRedirector.h"
@@ -24,28 +24,28 @@ int main(int argc, char* argv[]) {
 
     QMainWindow mainWindow;
     mainWindow.resize(1280, 800);
-    mainWindow.setWindowTitle(QBlock::Translator::tr("app.title"));
+    mainWindow.setWindowTitle(qcdot::Translator::tr("app.title"));
     mainWindow.setObjectName(QStringLiteral("QCdotEditor"));
 
-    auto* editor = new QBlock::NodeEditor(&mainWindow);
+    auto* editor = new qcdot::NodeEditor(&mainWindow);
     mainWindow.setCentralWidget(editor);
 
     auto* palette = new NodePalette(editor);
-    auto* dock = new QDockWidget(QBlock::Translator::tr("palette.title"), &mainWindow);
+    auto* dock = new QDockWidget(qcdot::Translator::tr("palette.title"), &mainWindow);
     dock->setWidget(palette);
     dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 
     auto* consoleWidget = new ConsoleWidget();
-    auto* consoleDock = new QDockWidget(QBlock::Translator::tr("toolbar.console"), &mainWindow);
+    auto* consoleDock = new QDockWidget(qcdot::Translator::tr("toolbar.console"), &mainWindow);
     consoleDock->setWidget(consoleWidget);
     consoleDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     
-    QObject::connect(editor, &QBlock::NodeEditor::toggleConsoleRequested, &mainWindow, [consoleDock](bool checked) {
+    QObject::connect(editor, &qcdot::NodeEditor::toggleConsoleRequested, &mainWindow, [consoleDock](bool checked) {
         consoleDock->setVisible(checked);
     });
     QObject::connect(consoleDock, &QDockWidget::visibilityChanged, editor, [editor](bool visible) {
         for (QAction* act : editor->findChildren<QAction*>()) {
-            if (act->text() == QBlock::Translator::tr("toolbar.console")) {
+            if (act->text() == qcdot::Translator::tr("toolbar.console")) {
                 act->setChecked(visible);
                 break;
             }
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     });
 
     auto applyWindowStyle = [&]() {
-        bool isDark = (QBlock::ThemeManager::instance().currentTheme() == QBlock::ThemeMode::Dark);
+        bool isDark = (qcdot::ThemeManager::instance().currentTheme() == qcdot::ThemeMode::Dark);
         consoleWidget->setDarkMode(isDark);
         if (isDark) {
             mainWindow.setStyleSheet(
@@ -75,15 +75,15 @@ int main(int argc, char* argv[]) {
     mainWindow.addDockWidget(Qt::BottomDockWidgetArea, consoleDock);
 
     auto refreshTitles = [&]() {
-        mainWindow.setWindowTitle(QBlock::Translator::tr("app.title"));
-        dock->setWindowTitle(QBlock::Translator::tr("palette.title"));
+        mainWindow.setWindowTitle(qcdot::Translator::tr("app.title"));
+        dock->setWindowTitle(qcdot::Translator::tr("palette.title"));
     };
 
-    QObject::connect(editor, &QBlock::NodeEditor::languageChanged, &mainWindow, [&]() {
+    QObject::connect(editor, &qcdot::NodeEditor::languageChanged, &mainWindow, [&]() {
         refreshTitles();
     });
 
-    QBlock::ThemeManager::onThemeChanged([&]() {
+    qcdot::ThemeManager::onThemeChanged([&]() {
         applyWindowStyle();
     });
 
@@ -94,21 +94,21 @@ int main(int argc, char* argv[]) {
 
     auto* intA = editor->addNode("ConstantInt", 80, 60);
     auto* intB = editor->addNode("ConstantInt", 80, 160);
-    if (auto* aConst = dynamic_cast<QBlock::Builtin::ConstantIntNode*>(intA))
+    if (auto* aConst = dynamic_cast<qcdot::Builtin::ConstantIntNode*>(intA))
         aConst->setValue(10);
-    if (auto* bConst = dynamic_cast<QBlock::Builtin::ConstantIntNode*>(intB))
+    if (auto* bConst = dynamic_cast<qcdot::Builtin::ConstantIntNode*>(intB))
         bConst->setValue(20);
 
     auto* floatA = editor->addNode("ConstantFloat", 80, 260);
-    if (auto* fConst = dynamic_cast<QBlock::Builtin::ConstantFloatNode*>(floatA))
+    if (auto* fConst = dynamic_cast<qcdot::Builtin::ConstantFloatNode*>(floatA))
         fConst->setValue(3.14159);
 
     auto* boolA = editor->addNode("ConstantBool", 80, 360);
-    if (auto* bConst = dynamic_cast<QBlock::Builtin::ConstantBoolNode*>(boolA))
+    if (auto* bConst = dynamic_cast<qcdot::Builtin::ConstantBoolNode*>(boolA))
         bConst->setValue(true);
 
     auto* strA = editor->addNode("ConstantString", 80, 460);
-    if (auto* sConst = dynamic_cast<QBlock::Builtin::ConstantStringNode*>(strA))
+    if (auto* sConst = dynamic_cast<qcdot::Builtin::ConstantStringNode*>(strA))
         sConst->setValue("Hello, qcdot!");
 
     auto* add = editor->addNode("Add", 320, 110);
@@ -144,8 +144,8 @@ int main(int argc, char* argv[]) {
     auto* shortcutOpen = new QShortcut(QKeySequence("Ctrl+O"), &mainWindow);
     QObject::connect(shortcutOpen, &QShortcut::activated, &mainWindow, [&]() {
         QString path = QFileDialog::getOpenFileName(
-            &mainWindow, QBlock::Translator::tr("dialog.open_title"), {},
-            QBlock::Translator::tr("dialog.filter"));
+            &mainWindow, qcdot::Translator::tr("dialog.open_title"), {},
+            qcdot::Translator::tr("dialog.filter"));
         if (!path.isEmpty()) {
             editor->loadFromFile(path);
         }
@@ -154,8 +154,8 @@ int main(int argc, char* argv[]) {
     auto* shortcutSave = new QShortcut(QKeySequence("Ctrl+S"), &mainWindow);
     QObject::connect(shortcutSave, &QShortcut::activated, &mainWindow, [&]() {
         QString path = QFileDialog::getSaveFileName(
-            &mainWindow, QBlock::Translator::tr("dialog.save_title"), {},
-            QBlock::Translator::tr("dialog.filter"));
+            &mainWindow, qcdot::Translator::tr("dialog.save_title"), {},
+            qcdot::Translator::tr("dialog.filter"));
         if (!path.isEmpty()) {
             editor->saveToFile(path);
         }

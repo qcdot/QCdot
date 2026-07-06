@@ -1,5 +1,5 @@
-#ifndef QBLOCK_VARIANT_H
-#define QBLOCK_VARIANT_H
+#ifndef QCDOT_VARIANT_H
+#define QCDOT_VARIANT_H
 
 #include "DataType.h"
 #include <QByteArray>
@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace QBlock {
+namespace qcdot {
 
 /// Runtime value that can hold any supported data type.
 /// Used as the data payload flowing through nodes.
@@ -137,6 +137,6 @@ inline bool Variant::operator==(const Variant& other) const {
     return storage_ == other.storage_;
 }
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_VARIANT_H
+#endif // QCDOT_VARIANT_H

@@ -1,13 +1,13 @@
-#ifndef QBLOCK_NODE_WIDGET_H
-#define QBLOCK_NODE_WIDGET_H
+#ifndef QCDOT_NODE_WIDGET_H
+#define QCDOT_NODE_WIDGET_H
 
-#include <QBlock/Node.h>
+#include <qcdot/Node.h>
 #include <QGraphicsItem>
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <memory>
 
-namespace QBlock {
+namespace qcdot {
 
 class PortWidget;
 
@@ -62,6 +62,6 @@ private:
     bool hoverAddButton_ = false;
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_NODE_WIDGET_H
+#endif // QCDOT_NODE_WIDGET_H

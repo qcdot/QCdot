@@ -1,38 +1,83 @@
-# Build
+# ====================== 构建目录（CMake/Ninja/GCC 编译输出） ======================
 build/
 build_bak/
-*.exe
-*.obj
-*.lib
-*.a
-*.o
-*.so
+build-debug/
+cmake-build-*/
+out/
+install/
+_install/
+
+# CMake 缓存与中间文件
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
 Makefile
+compile_commands.json
+install_manifest.txt
 *.ninja
+.ninja_deps
+.ninja_log
 *.log
 
-# IDE
-.trae/
-.vs/
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# GCC/MinGW 编译产物
+*.o
+*.a
+*.so
+*.obj
+*.lib
+*.exe
+*.dll
+*.dylib
+*.pdb
+*.ilk
+*.map
+*.gcno
+*.gcda
 
-# Qt
+# ====================== Qt 自动生成文件 ======================
 moc_*
 qrc_*
 ui_*
 *_autogen/
+qt_*.cpp
+qt_*.h
 
-# OS
+# ====================== IDE / 编辑器缓存 ======================
+# VS
+.vs/
+*.suo
+*.user
+*.vcxproj.user
+*.sln.docstates
+.trae/
+
+# CLion / JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+.shelf/
+
+# VSCode
+.vscode/
+# 如需保留配置可放开下面两行
+# !.vscode/settings.json
+# !.vscode/tasks.json
+
+# Vim / 文本编辑器临时文件
+*.swp
+*.swo
+*~
+.dbg/
+.trae/
+
+# ====================== 系统垃圾文件 ======================
+# Windows
 Thumbs.db
+# macOS
 .DS_Store
 
-# Debug logs
+# ====================== 自定义脚本/临时文档 ======================
 debug-qpainter-engine-error.md
-.dbg/.trae/
+roadmap_content.xml
+rebuild.ps1

@@ -7,7 +7,7 @@
 #include <QPushButton>
 #include <QScrollBar>
 #include <QString>
-#include <QBlock/Translator.h>
+#include <qcdot/Translator.h>
 
 class ConsoleWidget : public QWidget {
     Q_OBJECT
@@ -29,7 +29,7 @@ public:
         btnLayout->setContentsMargins(4, 2, 4, 4);
         btnLayout->setSpacing(4);
         
-        clearBtn_ = new QPushButton(QBlock::Translator::tr("console.clear"), this);
+        clearBtn_ = new QPushButton(qcdot::Translator::tr("console.clear"), this);
         clearBtn_->setFixedHeight(24);
         btnLayout->addWidget(clearBtn_);
         

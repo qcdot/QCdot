@@ -1,5 +1,5 @@
-#ifndef QBLOCK_SERIALIZER_H
-#define QBLOCK_SERIALIZER_H
+#ifndef QCDOT_SERIALIZER_H
+#define QCDOT_SERIALIZER_H
 
 #include "NodeGraph.h"
 #include <QJsonArray>
@@ -9,7 +9,7 @@
 #include <QFile>
 #include <optional>
 
-namespace QBlock {
+namespace qcdot {
 
 struct GraphLoadResult {
     NodeGraph graph;
@@ -20,7 +20,7 @@ struct GraphLoadResult {
 /// Default storage uses qCompress with a 4-byte magic header.
 class Serializer final {
 public:
-    /// Magic header bytes for compressed QBlock files.
+    /// Magic header bytes for compressed qcdot files.
     static constexpr quint32 kMagicCompressed  = 0x51424C43; // "QBLC"
     /// Magic for uncompressed JSON (legacy).
     static constexpr quint32 kMagicUncompressed = 0x51424C4A; // "QBLJ"
@@ -28,7 +28,7 @@ public:
     /// Serialize a graph to a QJsonDocument.
     static QJsonDocument toJson(const NodeGraph& graph, bool qtCompatible = false) {
         QJsonObject root;
-        root[QStringLiteral("version")] = 1;
+        root[QStringLiteral("version")] = QStringLiteral("0.1.0");
         root[QStringLiteral("qtCompatible")] = qtCompatible;
 
         QJsonArray nodesArr;
@@ -84,6 +84,13 @@ public:
 
         QJsonObject root = doc.object();
         GraphLoadResult result;
+
+        int version = root.contains(QStringLiteral("version")) 
+            ? root[QStringLiteral("version")].toInt() : 1;
+
+        if (version > 2) {
+            return std::nullopt;
+        }
 
         if (root.contains(QStringLiteral("qtCompatible"))) {
             result.qtCompatible = root[QStringLiteral("qtCompatible")].toBool();
@@ -194,6 +201,6 @@ public:
     }
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_SERIALIZER_H
+#endif // QCDOT_SERIALIZER_H

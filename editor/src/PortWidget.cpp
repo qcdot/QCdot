@@ -1,8 +1,8 @@
-#include <QBlock/PortWidget.h>
-#include <QBlock/ConnectionWidget.h>
-#include <QBlock/NodeWidget.h>
-#include <QBlock/Translator.h>
-#include <QBlock/ThemeManager.h>
+#include <qcdot/PortWidget.h>
+#include <qcdot/ConnectionWidget.h>
+#include <qcdot/NodeWidget.h>
+#include <qcdot/Translator.h>
+#include <qcdot/ThemeManager.h>
 #include <QCursor>
 #include <QPainter>
 #include <QPainterPath>
@@ -11,7 +11,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 
-namespace QBlock {
+namespace qcdot {
 
 PortWidget::PortWidget(Port* port, NodeWidget* parent)
     : QGraphicsEllipseItem(-6, -6, 12, 12, parent)
@@ -322,4 +322,4 @@ void PortWidget::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     QGraphicsEllipseItem::hoverLeaveEvent(event);
 }
 
-} // namespace QBlock
+} // namespace qcdot

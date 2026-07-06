@@ -1,7 +1,7 @@
-#include <QBlock/EditorScene.h>
-#include <QBlock/ConnectionWidget.h>
-#include <QBlock/PortWidget.h>
-#include <QBlock/Translator.h>
+#include <qcdot/EditorScene.h>
+#include <qcdot/ConnectionWidget.h>
+#include <qcdot/PortWidget.h>
+#include <qcdot/Translator.h>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QPainter>
@@ -13,7 +13,7 @@
 #include <QMenu>
 #include <QGraphicsView>
 
-namespace QBlock {
+namespace qcdot {
 
 EditorScene::EditorScene(QObject* parent)
     : QGraphicsScene(parent)
@@ -557,21 +557,21 @@ void EditorScene::drawBackground(QPainter* painter, const QRectF& rect) {
 }
 
 void EditorScene::dragEnterEvent(QGraphicsSceneDragDropEvent* event) {
-    if (event->mimeData()->hasFormat("application/x-qblock-node-type")) {
+    if (event->mimeData()->hasFormat("application/x-qcdot-node-type")) {
         event->acceptProposedAction();
     }
 }
 
 void EditorScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event) {
-    if (event->mimeData()->hasFormat("application/x-qblock-node-type")) {
+    if (event->mimeData()->hasFormat("application/x-qcdot-node-type")) {
         event->acceptProposedAction();
     }
 }
 
 void EditorScene::dropEvent(QGraphicsSceneDragDropEvent* event) {
-    if (!event->mimeData()->hasFormat("application/x-qblock-node-type")) return;
+    if (!event->mimeData()->hasFormat("application/x-qcdot-node-type")) return;
 
-    QString typeName = QString::fromUtf8(event->mimeData()->data("application/x-qblock-node-type"));
+    QString typeName = QString::fromUtf8(event->mimeData()->data("application/x-qcdot-node-type"));
     if (typeName.isEmpty()) return;
 
     if (!nodeCreator_) return;
@@ -588,4 +588,4 @@ void EditorScene::dropEvent(QGraphicsSceneDragDropEvent* event) {
     event->acceptProposedAction();
 }
 
-} // namespace QBlock
+} // namespace qcdot

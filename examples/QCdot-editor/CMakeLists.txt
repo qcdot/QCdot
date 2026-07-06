@@ -4,9 +4,9 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Gui Widgets)
 add_executable(QCdot-editor WIN32 main.cpp NodePalette.h ConsoleWidget.h ConsoleRedirector.h)
 
 target_link_libraries(QCdot-editor PRIVATE
-    QBlockEditor
-    QBlockEngine
-    QBlockNodes
+    qcdot_editor
+    qcdot_engine
+    qcdot_nodes
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets

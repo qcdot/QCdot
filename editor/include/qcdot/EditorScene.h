@@ -1,9 +1,9 @@
-#ifndef QBLOCK_EDITOR_SCENE_H
-#define QBLOCK_EDITOR_SCENE_H
+#ifndef QCDOT_EDITOR_SCENE_H
+#define QCDOT_EDITOR_SCENE_H
 
-#include <QBlock/NodeGraph.h>
-#include <QBlock/ThemeManager.h>
-#include <QBlock/InlineNodePicker.h>
+#include <qcdot/NodeGraph.h>
+#include <qcdot/ThemeManager.h>
+#include <qcdot/InlineNodePicker.h>
 #include "NodeWidget.h"
 #include "PortWidget.h"
 #include "ConnectionWidget.h"
@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace QBlock {
+namespace qcdot {
 
 /// The QGraphicsScene that manages the visual editor canvas.
 class EditorScene final : public QGraphicsScene {
@@ -108,6 +108,6 @@ private:
     void closeInlinePicker();
 };
 
-} // namespace QBlock
+} // namespace qcdot
 
-#endif // QBLOCK_EDITOR_SCENE_H
+#endif // QCDOT_EDITOR_SCENE_H
